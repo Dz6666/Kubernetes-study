@@ -1,0 +1,19 @@
+- job_name: 'blackbox'   
+  metrics_path: /probe
+  params:
+    module: [http_2xx]  # Look for a HTTP 200 response.
+  static_configs:
+    - targets:
+      - http://prometheus.io      # Target to probe with http.
+      - https://prometheus.io     # Target to probe with https.
+      # - http://example.com:8080 # Target to probe with http on port 8080.
+      - https://www.pingcode.com  # Target to probe with https.
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - source_labels: [instance]
+      target_label: target
+    - target_label: __address__
+      replacement: blackbox-exporter:9115  # The blackbox exporter's real hostname:port. (黑盒监控的地址，修改成blackbox_exporter的service地址)
