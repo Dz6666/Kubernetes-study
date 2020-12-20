@@ -4,6 +4,8 @@ data:
     modules:
       http_2xx:
         prober: http
+        http:
+          preferred_ip_protocol: "ip4"
       http_post_2xx:
         prober: http
         http:

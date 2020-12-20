@@ -4,10 +4,11 @@
     module: [http_2xx]  # Look for a HTTP 200 response.
   static_configs:
     - targets:
-      - http://prometheus.io      # Target to probe with http.
-      - https://prometheus.io     # Target to probe with https.
-      # - http://example.com:8080 # Target to probe with http on port 8080.
       - https://www.pingcode.com  # Target to probe with https.
+      - https://www.worktile.com  # Target to probe with https.
+      - http://top.toptops.top      # Target to probe with http.
+      - https://daizhe.net.cn     # Target to probe with https.
+      # - http://example.com:8080 # Target to probe with http on port 8080.
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
