@@ -1,0 +1,28 @@
+#service所属的标准资源api版本定义群组
+apiVersion: v1
+#定义资源的类型为Service
+kind: Service
+#定义元数据
+metadata:
+  #Service名称
+  name: ingress
+  #定义service所属的名称空间需要和nginx-ingress-controller————Pod在同一名称空间
+  namespace: ingress-nginx
+#定义service规格
+spec:
+  #定义Service的标签选择器，仅用于定义选择匹配nginx-ingress-controller的标签
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+  #ports字段
+  ports:
+  #此端口的名称
+  - name: http
+    #Service地址的哪个端口于后端Pods端口映射
+    port: 80
+    #nodePort: 30080
+  - name: https
+    port: 443
+    #nodePort: 30443
+  #定义Server类型为NodePort类型
+  type: NodePort

@@ -1,10 +1,16 @@
 ```
+  此项目用于个人学习Kubernetes。
+  个人博客: top.toptops.top
 
-  安装文档:https://www.cnblogs.com/dukuan
   
 ```
+# 项目目录大纲:
+  51_kubernetes进阶实战 
+    - 学习资料
+  01
 
-# 超全面、超详细的Kubernetes视频教程，基于最新的1.19
-http://www.kubeasy.com/
+## 推荐:
+### kubernetes讲师推荐博客
 
-咨询QQ727585266
+dukuan : http://www.kubeasy.com/
+mage   : http://www.magedu.com/

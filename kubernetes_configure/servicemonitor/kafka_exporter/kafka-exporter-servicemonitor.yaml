@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kafka-exporter
+  namespace: monitoring
+  labels:
+    app: kafka-exporter
+spec:
+  jobLabel: k8s-app
+  endpoints:
+  - interval: 30s
+    # port为kafka-exporter的service别名或直接写kafka-exporter端口
+    port: kafka-exporter
+  selector:
+    matchLabels:
+      app: kafka-exporter
+  # 匹配kafka-exporter所在的service的namespace
+  namespaceSelector:
+    matchNames:
+    - monitoring

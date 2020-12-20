@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: toptop-monitoring-ingress
+  namespace: monitoring
+spec:
+  rules:
+  - host: alertmanager.toptops.top
+    http:
+      paths:
+      - backend:
+          serviceName: alertmanager-main
+          servicePort: 9003
+        path: /
+  - host: grafana.toptops.top
+    http:
+      paths:
+      - backend:
+          serviceName: grafana
+          servicePort: 3000
+        path: /
+ 
+  - host: prometheus.toptops.top
+    http:
+      paths:
+      - backend:
+          serviceName: prometheus-k8s
+          servicePort: 9090
+        path: /
+status:
+  loadBalancer: {}
