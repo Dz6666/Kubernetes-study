@@ -2,8 +2,6 @@
 # requires a recent enough python with idna support in socket
 # pyopenssl, cryptography and idna
 # pip install pyopenssl cryptography idna
-#优化人：wangpeisong
-#邮箱1456171833@qq.com
 import datetime
 #获取系统当前时间
 Startime=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -120,6 +118,15 @@ def print_basic_info(hostinfo):
     # if count_days < 600:
     #     send_to_ding(access_token,text)
     # 邮箱通知
+	#设置email信息
+	#邮件内容设置
+	#message = MIMEText('content','plain','utf-8')
+	#邮件主题       
+	#message['Subject'] = 'title' 
+	#发送方信息
+	#message['From'] = sender 
+	#接受方信息     
+	#message['To'] = receivers[0]  
     mail_host = 'smtp.exmail.qq.com'
     mail_user = 'daizhe@worktile.com'
     mail_pass = 'fim8makZxDUAzekZ'
