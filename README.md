@@ -1,8 +1,7 @@
 ```
   此项目用于个人学习Kubernetes。
   个人博客: top.toptops.top
-
-  
+  座右铭：要么出众，要么出局
 ```
 # 项目目录大纲:
   51_kubernetes进阶实战 

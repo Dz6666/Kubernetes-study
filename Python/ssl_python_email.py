@@ -129,7 +129,7 @@ def print_basic_info(hostinfo):
 	#message['To'] = receivers[0]  
     mail_host = 'smtp.exmail.qq.com'
     mail_user = 'daizhe@worktile.com'
-    mail_pass = 'fim8makZxDUAzekZ'
+    mail_pass = 'fim8makZxDUAzekZ1q'
     sender = 'daizhe@worktile.com'
     receivers = ['daizhe@worktile.com','dinglonggang@worktile.com']
     # 设置email信息
