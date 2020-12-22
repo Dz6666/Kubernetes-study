@@ -1,0 +1,8 @@
+# 第三步：nfs-client 的 Deployment 声明完成后，我们就可以来创建一个StorageClass对象了
+# 我们声明了一个名为 course-nfs-storage 的StorageClass对象，注意下面的provisioner对应的值一定要和上面的Deployment下面的 PROVISIONER_NAME 这个环境变量的值一样
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: course-nfs-storage
+provisioner: fuseim.pri/ifs # or choose another name, must match deployment's env PROVISIONER_NAME'
+
