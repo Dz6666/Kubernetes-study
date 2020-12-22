@@ -1,0 +1,71 @@
+# nginx.yaml
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: my-nginx-demo
+  labels:
+    app.kubernetes.io/name: my-nginx-demo
+    app.kubernetes.io/version: "1.0"
+spec:
+  replicas: 1
+  serviceName: my-nginx-demo-svc
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: my-nginx-demo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: my-nginx-demo
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: my-nginx-demo
+          image: "nginx:1.17.9"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          #livenessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: http
+          #readinessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: http
+          volumeMounts:
+          - mountPath: "/usr/share/nginx/html"
+            name: html
+            
+  volumeClaimTemplates:
+    - metadata:
+        name: html
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: nfs-client
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nginx-demo-svc
+  labels:
+    app.kubernetes.io/name: my-nginx-demo
+    app.kubernetes.io/version: "1.0"
+spec:
+  # type: ClusterIP
+  # type: LoadBalancer
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: my-nginx-demo
