@@ -1,0 +1,10 @@
+- serverName: 'by-cluster'
+  serverAddress: 'https://172.17.64.138:6443'
+  #serverAdminUser: 'xxx'
+  #serverAdminPassword: 'xxx#'
+  serverAdminToken: 'null'
+  serverDashboardUrl: "https://k8s.xxx.com.cn/#"
+  production: 'false'
+  # ~]# cp /root/.kube/config /root/Kubernetes-study/kubernetes_configure/Ratel/by-cluster.config
+  kubeConfigPath: "/mnt/by-cluster.config"
+  # harborConfig: "HarborUrl, HarborUsername, HarborPassword, HarborEmail"
