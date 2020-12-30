@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:       # deployment的标签
+    app: nginx
+  name: nginx
+  namespace: default
+spec:
+  replicas: 2 #副本数
+  revisionHistoryLimit: 10 # 历史记录保留的个数
+  selector:     # 标签选择器，选择Pod满足条件的pods进行管理
+    matchLabels:
+      app: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:           # Pod的标签
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.15.2
+        imagePullPolicy: IfNotPresent
+        name: nginx
+        # 添加资源限制
+        resources:
+          limits: 
+            cpu: 10000m
+            memory: 170Mi
+          requests:
+            cpu: 10m
+            memory: 70Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
