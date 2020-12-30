@@ -63,6 +63,7 @@ class GitRepository(object):
         if returnCode != 0:
             print(" add returnCode", returnCode)
         else:
+            print('add success')
             self.commit()
 
     def push(self):
@@ -73,13 +74,14 @@ class GitRepository(object):
         if returnCode != 0:
             print("push returnCode", returnCode)
         else:
+            print('push success')
             # sendMessage({
             #     "fileName": "api文档 : \n\n已更新，请注意查看！ \n" +"\n更新信息: {}".format(
             #         commitMessage),
             #     "text": time.strftime("%Y/%m/%d %H:%M"),
             #     "error": False
             # })
-            pass
+            # pass
     def commit(self):
         msg = input("输入提交commit信息:") 
         commitMessage=time.strftime("%Y/%m/%d %H:%M") + '-' + msg
@@ -87,6 +89,9 @@ class GitRepository(object):
         process = subprocess.Popen(cmd, shell=True)
         process.wait()
         self.push()
+        returnCode = process.returncode
+        # if returnCode != 0:
+
 
 
     def tags(self):
