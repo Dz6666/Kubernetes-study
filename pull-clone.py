@@ -81,7 +81,7 @@ class GitRepository(object):
             # })
             pass
     def commit(self):
-        msg = input("输入提交commit信息 : ") 
+        msg = input("输入提交commit信息:") 
         commitMessage=time.strftime("%Y/%m/%d %H:%M") + '-' + msg
         cmd = "git commit -m  '{}'".format(commitMessage)
         process = subprocess.Popen(cmd, shell=True)
@@ -98,7 +98,7 @@ class GitRepository(object):
 
     def change_to_branch(self, branch):
         """
-        切换分值
+        切换分支
         :param branch:
         :return:
         """
@@ -131,6 +131,9 @@ if __name__ == '__main__':
     print(branch_list)
     # 分支切换
     # repo.change_to_branch('develop')
-    repo.pull()
-    repo.add()
+    try:
+        repo.pull()
+        repo.add()
+    except:
+        print('提交失败')
 
