@@ -81,7 +81,8 @@ class GitRepository(object):
             # })
             pass
     def commit(self):
-        commitMessage=time.strftime("%Y/%m/%d %H:%M")
+        msg = input("commit : ") 
+        commitMessage=msg + time.strftime("%Y/%m/%d %H:%M")
         cmd = "git commit -m  '{}'".format(commitMessage)
         process = subprocess.Popen(cmd, shell=True)
         process.wait()
