@@ -130,6 +130,6 @@ if __name__ == '__main__':
     print(branch_list)
     # 分支切换
     # repo.change_to_branch('develop')
-    # repo.pull()
+    repo.pull()
     repo.add()
 
