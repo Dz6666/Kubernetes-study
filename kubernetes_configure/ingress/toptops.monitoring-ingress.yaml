@@ -27,5 +27,13 @@ spec:
           serviceName: prometheus-k8s
           servicePort: 9090
         path: /
+#  - host: weave.toptops.top
+#    http:
+#      paths:
+#      - backend:
+#          serviceName: weave-scope-app
+#          servicePort: 80
+#        path: /
+
 status:
   loadBalancer: {}
