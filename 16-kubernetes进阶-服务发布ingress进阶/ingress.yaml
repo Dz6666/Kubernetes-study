@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  # 域名重定向
+  annotations:
+    nginx.ingress.kubernetes.io/permanent-redirect: https://www.baidu.com
+    nginx.ingress.kubernetes.io/permanent-redirect-code: '308'
+  name: ingress-test
+  namespace: test
+spec:
+  rules:
+  - host: www.daizhe.net.cn
+    http:
+      paths:
+      - backend:
+          serviceName: ingress-test
+          servicePort: 80
+        path: /
+       

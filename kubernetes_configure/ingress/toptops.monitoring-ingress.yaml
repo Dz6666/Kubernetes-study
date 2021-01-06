@@ -1,6 +1,8 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
+  annotations:
+   prometheus.io/http_probe: "true"  
   name: toptop-monitoring-ingress
   namespace: monitoring
 spec:
@@ -27,5 +29,13 @@ spec:
           serviceName: prometheus-k8s
           servicePort: 9090
         path: /
+#  - host: weave.toptops.top
+#    http:
+#      paths:
+#      - backend:
+#          serviceName: weave-scope-app
+#          servicePort: 80
+#        path: /
+
 status:
   loadBalancer: {}

@@ -18,3 +18,32 @@
       target_label: target
     - target_label: __address__
       replacement: blackbox-exporter:9115  # The blackbox exporter's real hostname:port. (黑盒监控的地址，修改成blackbox_exporter的service地址)
+#### 
+- job_name: 'auto_discovery'
+  metrics_path: /probe
+  params:
+    module: [http_2xx]  
+  kubernetes_sd_configs:        # 使用k8s服务发现
+  - role: ingress                       # 基于Ingress的服务发现，可以基于Service，基于Pod等，k8s资源
+  relabel_configs:                      # 并不是所有的域名都需要进行监控，使用下面的匹配规则进行匹配
+  - source_labels: [__meta_kubernetes_ingress_annotation_prometheus_io_http_probe]      # 在ingress中定义了一个 Annotation 为 键为prometheus_io_http_probe值为true，使用action: keep标识（keep标识符合规则的保留并收集监控，drop标识符合规则的剔除）
+    action: keep
+    regex: true
+  - source_labels: [__meta_kubernetes_ingress_scheme,__address__,__meta_kubernetes_ingress_path]        # 定义target_label取ingress的scheme、ingress的scheme、ingress的address，ingress的path，匹配的这三个值会以“；”间隔
+    regex: (.+);(.+);(.+)                       # 使用正则表达式进行匹配
+    replacement: ${1}://${2}${3}        # $1 = scheme  $2 = address  $3 = path
+    target_label: __param_target 
+  - source_labels: [__meta_kubernetes_ingress_scheme,__address__,__meta_kubernetes_ingress_path]
+    regex: (.+);(.+);(.+)
+    replacement: ${1}://${2}${3}
+    target_label: target                        # 发现模板默认取值是target，所以调整一下additional 配置文件
+  - target_label: __address__           # 将黑盒地址赋值给 __address__
+    replacement: blackbox-exporter:9115
+  - source_labels: [__param_target]
+    target_label: instance
+  - action: labelmap                            # labelmap 就是取到的ingress的label
+    regex: __meta_kubernetes_ingress_label_(.+)
+  - source_labels: [__meta_kubernetes_namespace]        # 将ingress的namespace转成kubernetes_namespace  
+    target_label: kubernetes_namespace
+  - source_labels: [__meta_kubernetes_ingress_name]     # 将ingress的name转成kubernetes_name
+    target_label: kubernetes_name

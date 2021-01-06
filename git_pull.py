@@ -125,7 +125,7 @@ class GitRepository(object):
 
 if __name__ == '__main__':
     # local_path = os.path.join('codes', 't1')
-    local_path = os.path.join('/root/cmdb/')
+    local_path = os.path.join('/root/Kubernetes-study')
     remote_path = 'https://github.com/Dz6666/Kubernetes-study.git'
     repo = GitRepository(local_path,remote_path)
     branch_list = repo.branches()

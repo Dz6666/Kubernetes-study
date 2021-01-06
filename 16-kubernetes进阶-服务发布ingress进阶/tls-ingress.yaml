@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  name: tls-ingress-test
+  namespace: test
+spec:
+  rules:
+  - host: tls.toptops.top
+    http:
+      paths:
+      - backend:
+          serviceName: ingress-test
+          servicePort: 80
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - tls.toptops.top
+    secretName: ca-cert
+status:
+  loadBalancer: {}
