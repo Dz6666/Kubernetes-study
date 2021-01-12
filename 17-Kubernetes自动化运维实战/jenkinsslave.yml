@@ -1,0 +1,79 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    k8s-app: jenkinsagent
+  name: jenkinsagent
+  namespace: devops
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: jenkinsagent
+  template:
+    metadata:
+      labels:
+        k8s-app: jenkinsagent
+      namespace: devops
+      name: jenkinsagent
+    spec:
+      containers:
+        - name: jenkinsagent
+          image: jenkinsci/jnlp-slave:3.36-1            # slave版本
+          securityContext:
+            privileged: true
+          imagePullPolicy: IfNotPresent                 
+        #  resources:
+        #    limits:
+        #      cpu: 1000m
+        #      memory: 2Gi
+        #    requests:
+        #      cpu: 500m
+        #      memory: 512Mi
+          volumeMounts:                                 # 挂载,如果认为salve的数据有需要保留的时候，将宿主机的 /data/devops/jenkins/workspace挂载到容器的 /home/jenkins/workspace
+            - name: jenkinsagent-workdir
+              mountPath: /home/jenkins/workspace
+            - name: buildtools
+              mountPath: /home/jenkins/buildtools
+            - name: dockersock
+              mountPath: "/var/run/docker.sock"
+            - name: dockercmd
+              mountPath: /usr/bin/docker
+            - name: kubectlconfig
+              mountPath: /home/jenkins/.kube/config
+            - name: kubectlcmd
+              mountPath: /usr/bin/kubectl
+          env:
+            - name: JENKINS_URL
+              value: http://218.244.158.229:30080               # jenkins master 地址
+            - name: JENKINS_SECRET
+              value: 5ea721fe0226593abb4a0c2dc8c21a87aa125ca5c9846e7328cc577891ea6d20           # slave节点密钥
+            - name: JENKINS_AGENT_NAME
+              value: slave-static-1                                                     # slave节点名称
+            - name: JENKINS_AGENT_WORKDIR
+              value: /home/jenkins/workspace
+      nodeSelector:             # 节点标签选择器
+        jenkins-slave: "true"
+      volumes:
+        - name: jenkinsagent-workdir
+          hostPath: 
+            path: /data/devops/jenkins/workspace
+            type: Directory
+        - name: buildtools
+          hostPath: 
+            path: /usr/local/buildtools
+            type: Directory
+        - name: kubectlconfig
+          hostPath: 
+            path: /root/.kube/config
+        - name: kubectlcmd
+          hostPath: 
+            path: /usr/bin/kubectl
+        - name: dockersock
+          hostPath: 
+            path: /var/run/docker.sock
+        - name: dockercmd
+          hostPath: 
+            path: /usr/bin/docker
