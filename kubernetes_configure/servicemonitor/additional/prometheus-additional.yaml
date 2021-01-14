@@ -74,3 +74,9 @@
   - source_labels: [__meta_kubernetes_service_name]
     regex: prometheus-server
     action: drop
+# jenkins
+- job_name: 'jenkins'
+  metrics_path: '/prometheus/'
+  scheme: http
+  static_configs:
+      - targets: ['218.244.158.229:30080']   # jenkins 地址。测试写成fqdn
