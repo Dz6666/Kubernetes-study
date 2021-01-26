@@ -80,3 +80,17 @@
   scheme: http
   static_configs:
       - targets: ['218.244.158.229:30080']   # jenkins 地址。测试写成fqdn
+# ssl_exporter
+- job_name: ssl-exporter
+  metrics_path: /probe
+  static_configs:
+  - targets:
+    - kubernetes.default.svc:443
+  relabel_configs:
+  - source_labels: [__address__]
+    target_label: __param_target
+  - source_labels: [__param_target]
+    target_label: instance
+  - target_label: __address__
+    # replacement: ssl-exporter.monitoring:9219
+    replacement: ssl-exporter:9219

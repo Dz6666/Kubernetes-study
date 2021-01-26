@@ -1,0 +1,30 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: monitoring-ssl-tls-rules
+  namespace: monitoring
+  labels:
+    prometheus: k8s
+    role: alert-rules
+spec:
+  groups:
+  - name: check_ssl_validity
+    rules:
+    - alert: "K8S集群证书在30天后过期"
+      expr: (ssl_cert_not_after-time())/3600/24 <30
+      for: 1h
+      labels:
+        severity: critical
+      annotations:
+        description: 'K8S集群的证书还有{{ printf "%.1f" $value }}天就过期了,请尽快更新证书'
+        summary: "K8S集群证书证书过期警告"
+  - name: ssl_connect_status
+    rules:
+    - alert: "K8S集群证书可用性异常"
+      expr: ssl_tls_connect_success == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "K8S集群证书连接异常"
+        description: "K8S集群 {{ $labels.instance }}  证书连接异常"

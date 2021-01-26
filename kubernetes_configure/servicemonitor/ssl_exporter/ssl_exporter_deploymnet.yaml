@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: ssl-exporter
+  name: ssl-exporter
+  namespace: monitoring
+spec:
+  ports:
+    - name: ssl-exporter
+      protocol: TCP
+      port: 9219
+      targetPort: 9219
+  selector:
+    app: ssl-exporter
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ssl-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ssl-exporter
+  template:
+    metadata:
+      name: ssl-exporter
+      labels:
+        app: ssl-exporter
+    spec:
+      initContainers:
+        # Install kube ca cert as a root CA
+        - name: ca
+          image: alpine
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              apk add --update ca-certificates
+              cp /var/run/secrets/kubernetes.io/serviceaccount/ca.crt /usr/local/share/ca-certificates/kube-ca.crt
+              update-ca-certificates
+              cp /etc/ssl/certs/* /ssl-certs
+          volumeMounts:
+            - name: ssl-certs
+              mountPath: /ssl-certs
+      containers:
+        - name: ssl-exporter
+          image: ribbybibby/ssl-exporter:v0.6.0
+          ports:
+            - name: tcp
+              containerPort: 9219
+          volumeMounts:
+            - name: ssl-certs
+              mountPath: /etc/ssl/certs
+      volumes:
+        - name: ssl-certs
+          emptyDir: {}
