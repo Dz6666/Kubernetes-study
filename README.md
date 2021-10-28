@@ -11,7 +11,6 @@
 ## 推荐:
 ### kubernetes讲师推荐博客
 
-dukuan : 
-  - https://ke.qq.com/course/2738602
+dukuan : https://ke.qq.com/course/2738602
 
 mage   : http://www.magedu.com/
